@@ -102,6 +102,7 @@ impl Game {
             // Clear the screen to black
             gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
 
+            self.world.update(&input_datas);
             self.world.draw();
 
             self.fps.frame_end();

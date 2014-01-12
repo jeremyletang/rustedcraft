@@ -25,6 +25,8 @@ use std::cell::RefCell;
 use math::{Mat4, Vec3};
 use cube::Cube;
 use texture_loader::TextureLoader;
+use camera::Camera;
+use input_manager::InputDatas;
 
 pub struct CubeData {
     tex_id:         u32,
@@ -34,8 +36,7 @@ pub struct CubeData {
 pub struct World {
     priv cubes_datas:       ~[CubeData],
     priv position:          Vec3<f32>,
-    priv mat_projection:    Mat4<f32>,
-    priv mat_view:          Mat4<f32>,
+    priv camera:            Camera,
     priv cube:              Cube,
     priv texture_loader:    Rc<RefCell<TextureLoader>>
 }
@@ -45,28 +46,29 @@ impl World {
         World {
             cubes_datas:        gen_world(),
             position:           Vec3::new(0f32, 0f32, 0f32),
-            mat_projection:     Mat4::perspective(65f32, 4f32 / 3f32, 0.1f32, 100f32),
-            mat_view:           Mat4::<f32>::look_at(&Vec3::<f32>::new(10.,6.,-10.), &Vec3::<f32>::new(0.,0.,0.), &Vec3::<f32>::new(0.,1.,0.)),
+            camera:             Camera::new(),
             cube:               Cube::new(),
             texture_loader:     texture_loader
         }
     }
 
-    pub fn update_position(&mut self, move: Vec3<f32>) -> () {
-        self.position.x += move.x;
-        self.position.y += move.y;
-        self.position.z += move.z;
+    pub fn update(&mut self, input_datas: &InputDatas) -> () {
+        self.camera.update(input_datas);
+        // self.position.x += move.x;
+        // self.position.y += move.y;
+        // self.position.z += move.z;
     }
 
     pub fn draw(&mut self) -> () {
         let mut mvp: Mat4<f32>;
         let mut model: Mat4<f32>;
+        let cam = self.camera.get_mat();
         for c in self.cubes_datas.iter() {
             model = c.position.clone();
             model.d1 += self.position.x;
             model.d2 += self.position.y;
             model.d3 += self.position.z;
-            mvp = self.mat_projection.cross_product(&self.mat_view).cross_product(&model);
+            mvp = cam.cross_product(&model);
             self.cube.draw_cube(self.texture_loader.borrow().with(|loader| loader.get(c.tex_id)), &mvp);
         }
     }

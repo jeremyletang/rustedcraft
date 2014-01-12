@@ -19,50 +19,26 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+use input_manager::InputDatas;
+use math::{Mat4, Vec3};
 
-#[crate_id = "rustedcraft#0.0.1"];
-#[crate_type = "bin"];
-
-#[warn(unnecessary_typecast)];
-#[warn(non_uppercase_pattern_statics)];
-#[warn(non_uppercase_statics)];
-#[warn(non_camel_case_types)];
-
-#[allow(dead_code)];
-
-extern mod extra;
-extern mod native;
-extern mod gl;
-extern mod glfw;
-extern mod stb = "stb_image";
-
-use game::Game;
-
-mod glfw_utils;
-mod game;
-mod perf_metrics;
-mod shaders;
-mod math;
-mod cube;
-mod texture_loader;
-mod world;
-mod font;
-mod text;
-mod input_manager;
-mod camera;
-
-#[link(name = "glfw3")]
-extern {}
-
-#[start]
-fn start(argc: int, argv: **u8) -> int {
-    native::start(argc, argv, main)
+pub struct Camera {
+    priv mat_projection:    Mat4<f32>,
+    priv mat_view:          Mat4<f32>
 }
 
+impl Camera {
+    pub fn new() -> Camera {
+        Camera {
+            mat_projection:     Mat4::perspective(65f32, 4f32 / 3f32, 0.1f32, 100f32),
+            mat_view:           Mat4::<f32>::look_at(&Vec3::<f32>::new(10.,6.,-10.), &Vec3::<f32>::new(0.,0.,0.), &Vec3::<f32>::new(0.,1.,0.))
+        }
+    }
 
-fn main() {
-    do glfw::start {
-        let mut game = Game::new();
-        game.run();
+    pub fn update(&mut self, input_datas: &InputDatas) -> () {
+    }
+
+    pub fn get_mat(&self) -> Mat4<f32> {
+        self.mat_projection.cross_product(&self.mat_view)
     }
 }
