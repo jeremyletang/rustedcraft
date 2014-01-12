@@ -1,3 +1,5 @@
 ./build/
 ./doc/
 ./bin
+.DS_store
+.rust
