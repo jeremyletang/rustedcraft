@@ -19,51 +19,34 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+use extra::time;
 
-#[crate_id = "rustedcraft#0.0.1"];
-#[crate_type = "bin"];
-
-#[warn(unnecessary_typecast)];
-#[warn(non_uppercase_pattern_statics)];
-#[warn(non_uppercase_statics)];
-#[warn(non_camel_case_types)];
-
-#[allow(dead_code)];
-
-extern mod extra;
-extern mod native;
-extern mod gl;
-extern mod glfw;
-extern mod stb = "stb_image";
-
-use game::Game;
-
-mod glfw_utils;
-mod game;
-mod perf_metrics;
-mod shaders;
-mod math;
-mod cube;
-mod texture_loader;
-mod world;
-mod font;
-mod text;
-mod input_manager;
-mod camera;
-mod timer;
-
-#[link(name = "glfw3")]
-extern {}
-
-#[start]
-fn start(argc: int, argv: **u8) -> int {
-    native::start(argc, argv, main)
+pub struct Timer {
+	priv last: 	f64
 }
 
+impl Timer {
+	pub fn new() -> Timer {
+		Timer {
+			last: time::precise_time_s()
+		}
+	}
 
-fn main() {
-    do glfw::start {
-        let mut game = Game::new();
-        game.run();
-    }
+	pub fn current(&self) -> f64 {
+		time::precise_time_s()
+	}
+
+	pub fn dela_time(&mut self) -> f64 {
+		let ret_time = time::precise_time_s() - self.last;
+		self.last = time::precise_time_s();
+		ret_time
+	}
+
+	pub fn reset(&mut self) -> () {
+		self.last = time::precise_time_s()
+	}
+
+	pub fn get_elapsed_time(&self) -> f64 {
+		time::precise_time_s() - self.last
+	}
 }

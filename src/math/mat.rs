@@ -138,9 +138,9 @@ impl<T: Float + Real> Mat4<T> {
             c2: up.z.clone(), 
             c3: -forward.z.clone(), 
             c4: zero(),
-            d1: -eye_position.scalar_product(&side),
-            d2: -eye_position.scalar_product(&up), 
-            d3: eye_position.scalar_product(&forward), 
+            d1: -eye_position.dot_product(&side),
+            d2: -eye_position.dot_product(&up), 
+            d3: eye_position.dot_product(&forward), 
             d4: one(),
         }
     }

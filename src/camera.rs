@@ -24,17 +24,27 @@ use math::{Mat4, Vec3};
 
 pub static SPEED: f32        = 3f32;
 pub static MOUSE_SPEED: f32  = 0.005f32;
+pub static FOVY: f32         = 65f32;
+pub static ASPECT: f32       = 4f32 / 3f32;
+pub static Z_NEAR: f32       = 0.1f32;
+pub static Z_FAR: f32        = 100f32;
 
 pub struct Camera {
     priv mat_projection:    Mat4<f32>,
-    priv mat_view:          Mat4<f32>
+    priv mat_view:          Mat4<f32>,
+    priv position:          Vec3<f32>,
+    priv h_angle:           f32,
+    priv v_angle:           f32
 }
 
 impl Camera {
     pub fn new() -> Camera {
         Camera {
-            mat_projection:     Mat4::perspective(65f32, 4f32 / 3f32, 0.1f32, 100f32),
-            mat_view:           Mat4::<f32>::look_at(&Vec3::<f32>::new(10.,6.,-10.), &Vec3::<f32>::new(0.,0.,0.), &Vec3::<f32>::new(0.,1.,0.))
+            mat_projection:     Mat4::perspective(FOVY, ASPECT, Z_NEAR, Z_FAR),
+            mat_view:           Mat4::<f32>::look_at(&Vec3::<f32>::new(10.,6.,-10.), &Vec3::<f32>::new(0.,0.,0.), &Vec3::<f32>::new(0.,1.,0.)),
+            position:           Vec3::new(0f32, 0f32, 0f32),
+            h_angle:            3.14f32,
+            v_angle:            0f32
         }
     }
 

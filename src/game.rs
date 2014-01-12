@@ -68,7 +68,7 @@ impl Game {
 
     fn init_gl() -> GLuint {
         gl::load_with(glfw::get_proc_address);
-        gl::ClearColor(0., 0., 0.4, 0.);
+        gl::ClearColor(0., 0., 0.2, 0.);
         let mut vertex_array =  0;
         unsafe { 
             gl::GenVertexArrays(1, &mut vertex_array);
@@ -77,6 +77,8 @@ impl Game {
         gl::Enable(gl::DEPTH_TEST);
         // Accept fragment if it closer to the camera than the former one
         gl::DepthFunc(gl::LESS);
+
+        // gl::PolygonMode(gl::FRONT_AND_BACK, gl::LINE);
 
         vertex_array
     }
