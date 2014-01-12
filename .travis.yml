@@ -1,0 +1,18 @@
+before_install:
+  - yes | sudo add-apt-repository ppa:hansjorg/rust
+  - sudo apt-get update
+install:
+  - sudo apt-get install rust-nightly
+  - sudo apt-get install libXxf86vm-dev
+  - sudo apt-get install libopenal-dev
+  - sudo apt-get install libsndfile1-dev
+script:
+  - git clone https://github.com/glfw/glfw.git
+  - cd glfw
+  - git checkout 3.0.3
+  - cmake -DBUILD_SHARED_LIBS=ON
+  - make
+  - sudo make install
+  - cd ..
+  - make deps
+  - make
