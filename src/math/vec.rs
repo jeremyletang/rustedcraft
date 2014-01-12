@@ -80,6 +80,22 @@ impl<T: Float + Real> Vec3<T> {
     pub fn scalar_product(&self, oth: &Vec3<T>) -> T {
         (self.x * oth.x) + (self.y * oth.y) + (self.z * oth.z)
     }
+
+    pub fn add_vec(&self, oth: &Vec3<T>) -> Vec3<T> {
+        Vec3 {
+            x: self.x + oth.x,
+            y: self.y + oth.y,
+            z: self.z + oth.z
+        }
+    }
+
+    pub fn sub_vec(&self, oth: &Vec3<T>) -> Vec3<T> {
+        Vec3 {
+            x: self.x - oth.x,
+            y: self.y - oth.y,
+            z: self.z - oth.z
+        }
+    }
 }
 
 
@@ -100,6 +116,21 @@ impl<T: Float + Real> Vec2<T> {
     pub fn scalar_product(&self, oth: &Vec2<T>) -> T {
         (self.x * oth.x) + (self.y * oth.y)
     }
+
+    pub fn add_vec(&self, oth: &Vec2<T>) -> Vec2<T> {
+        Vec2 {
+            x: self.x + oth.x,
+            y: self.y + oth.y
+        }
+    }
+
+    pub fn sub_vec(&self, oth: &Vec2<T>) -> Vec2<T> {
+        Vec2 {
+            x: self.x - oth.x,
+            y: self.y - oth.y
+        }
+    }
+
 }
 
 

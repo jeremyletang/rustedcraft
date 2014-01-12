@@ -22,6 +22,9 @@
 use input_manager::InputDatas;
 use math::{Mat4, Vec3};
 
+pub static SPEED: f32        = 3f32;
+pub static MOUSE_SPEED: f32  = 0.005f32;
+
 pub struct Camera {
     priv mat_projection:    Mat4<f32>,
     priv mat_view:          Mat4<f32>
