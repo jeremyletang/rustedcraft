@@ -65,14 +65,14 @@ impl World {
 
     pub fn draw(&mut self) -> () {
         let mut mvp: Mat4<f32>;
-        // let mut model: Mat4<f32>;
+        let mut model: Mat4<f32>;
         let cam = self.camera.get_mat();
         for c in self.cubes_datas.iter() {
-            // model = c.position.clone();
+            model = c.position.clone();
             // model.d1 += self.position.x;
             // model.d2 += self.position.y;
             // model.d3 += self.position.z;
-            mvp = cam.cross_product(&Mat4::identity());
+            mvp = cam.cross_product(&model);
             self.cube.draw_cube(self.texture_loader.borrow().with(|loader| loader.get(c.tex_id)), &mvp);
         }
     }
@@ -81,12 +81,12 @@ impl World {
 fn gen_world() -> ~[CubeData] {
     let mut cubes_datas: ~[CubeData] = ~[];
     cubes_datas.push(CubeData { tex_id: 1, position: Mat4::identity() });
-    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(2f32, 0f32, 0f32) });
-    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(2f32, 2f32, 0f32) });
-    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 2f32, 0f32) });
-    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(2f32, 0f32, -2f32) });
-    // cubes_datas.push(CubeData { tex_id: 2, position: Mat4::translate(2f32, 2f32, -2f32) });
-    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 2f32, -2f32) });
-    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 0f32, -2f32) });
+    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(4f32, 0f32, 0f32) });
+    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(4f32, 4f32, 0f32) });
+    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 4f32, 0f32) });
+    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(4f32, 0f32, -4f32) });
+    cubes_datas.push(CubeData { tex_id: 2, position: Mat4::translate(4f32, 4f32, -4f32) });
+    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 4f32, -4f32) });
+    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 0f32, -4f32) });
     cubes_datas
 }

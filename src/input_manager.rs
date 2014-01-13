@@ -67,7 +67,7 @@ impl InputManager {
         }
 
         let mouse_pos = match window.get_cursor_pos() {
-            (x, y)  => { println!("MOUSE_X: {:f} / MOUSE_Y: {:f}", x, y);
+            (x, y)  => { // println!("MOUSE_X: {:f} / MOUSE_Y: {:f}", x, y);
                 if (x == 0f64 && y == 0f64) {
                     Vec2::new(1024f32 / 2f32, 768f32 /2f32)
                 } else {
@@ -78,8 +78,10 @@ impl InputManager {
         // if self.timer.get_elapsed_time() > 1f64 {
             match window.get_size() {
                 (x, y)  => {
+                    window.is_focused();
                     window.set_cursor_pos(num::cast::<i32, f64>(x).unwrap() / 2f64,
-                        num::cast::<i32, f64>(y).unwrap() / 2f64)
+                        num::cast::<i32, f64>(y).unwrap() / 2f64);
+                    window.is_focused();
                 }
             };
             // self.timer.reset()

@@ -20,7 +20,6 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 use std::num::{cos, sin};
-use std::f32::consts::PI;
 
 use glfw;
 
@@ -28,12 +27,13 @@ use input_manager::InputDatas;
 use math::{Mat4, Vec3, Vec2};
 use timer::Timer;
 
-pub static SPEED: f32               = 3f32;
-pub static MOUSE_SPEED: f32         = 0.005f32;
+pub static SPEED: f32               = 10f32;
+pub static MOUSE_SPEED: f32         = 0.07f32;
 pub static FOVY: f32                = 45f32;
 pub static ASPECT: f32              = 4f32 / 3f32;
 pub static Z_NEAR: f32              = 0.1f32;
 pub static Z_FAR: f32               = 100f32;
+pub static CONST_RIGHT_ANGLE: f32   = 3.14f32 / 2f32;
 
 pub struct Camera {
     priv mat_projection:    Mat4<f32>,
@@ -78,17 +78,13 @@ impl Camera {
     pub fn update(&mut self, 
         input_datas: &InputDatas) -> () {
         
-        // println!("MOUSE_X: {} / MOUSE_Y: {}", input_datas.mouse_position.x, input_datas.mouse_position.y);
-
         let delta_time = self.timer.delta_time();
-        // println!("DELTA_TIME: {}", ::std::num::cast::<f64, f32>(delta_time).unwrap());
-        // println!("DIV_X: {} / DIV_Y: {}", (self.window_size.x / 2f32 - input_datas.mouse_position.x), (self.window_size.y / 2f32 - input_datas.mouse_position.y))
 
         self.h_angle += MOUSE_SPEED * ::std::num::cast(delta_time).unwrap() * (self.window_size.x / 2f32 - input_datas.mouse_position.x);
         self.v_angle += MOUSE_SPEED * ::std::num::cast(delta_time).unwrap() * (self.window_size.y / 2f32 - input_datas.mouse_position.y);
         
         let dir     = Vec3::new(cos(self.v_angle) * sin(self.h_angle), sin(self.v_angle), cos(self.v_angle) * cos(self.h_angle));
-        let right   = Vec3::new(sin(self.h_angle - PI), 0f32, cos(self.h_angle - PI));
+        let right   = Vec3::new(sin(self.h_angle - CONST_RIGHT_ANGLE), 0f32, cos(self.h_angle - CONST_RIGHT_ANGLE));
         // let up      = right.cross_product(&dir);
         let up = Vec3::new(0f32, 1f32, 0f32);
         self.move(input_datas, &dir, &right, ::std::num::cast(delta_time).unwrap());

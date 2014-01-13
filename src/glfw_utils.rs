@@ -32,6 +32,7 @@ pub fn init() -> glfw::Window {
     let window = glfw::Window::create(1024, 768, "rustedcraft", glfw::Windowed).unwrap();
     window.make_context_current();
     window.set_cursor_pos(1024f64 / 2f64, 768f64 / 2f64);
+    window.set_cursor_mode(glfw::CursorDisabled);
     // glfw::set_swap_interval(0);
 
     window
