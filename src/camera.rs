@@ -20,6 +20,7 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 use std::num::{cos, sin};
+use std::f32::consts::PI;
 
 use glfw;
 
@@ -27,13 +28,13 @@ use input_manager::InputDatas;
 use math::{Mat4, Vec3, Vec2};
 use timer::Timer;
 
-pub static SPEED: f32               = 10f32;
+pub static SPEED: f32               = 12f32;
 pub static MOUSE_SPEED: f32         = 0.07f32;
 pub static FOVY: f32                = 45f32;
 pub static ASPECT: f32              = 4f32 / 3f32;
 pub static Z_NEAR: f32              = 0.1f32;
 pub static Z_FAR: f32               = 100f32;
-pub static CONST_RIGHT_ANGLE: f32   = 3.14f32 / 2f32;
+pub static CONST_RIGHT_ANGLE: f32   = PI / 2f32;
 
 pub struct Camera {
     priv mat_projection:    Mat4<f32>,
@@ -51,7 +52,7 @@ impl Camera {
             mat_projection:     Mat4::perspective(FOVY, ASPECT, Z_NEAR, Z_FAR),
             mat_view:           Mat4::look_at(&Vec3::new(0f32, 0f32, 5f32), &Vec3::new(0f32, 0f32, 0f32), &Vec3::new(0f32, 1f32, 0f32)),
             position:           Vec3::new(0f32, 0f32, 5f32),
-            h_angle:            3.14f32,
+            h_angle:            PI,
             v_angle:            0f32,
             timer:              Timer::new(),
             window_size:        window_size

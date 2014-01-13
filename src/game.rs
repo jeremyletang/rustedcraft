@@ -78,7 +78,7 @@ impl Game {
         gl::Enable(gl::DEPTH_TEST);
         // Accept fragment if it closer to the camera than the former one
         gl::DepthFunc(gl::LESS);
-
+        // gl::Enable(gl::CULL_FACE);
         // gl::PolygonMode(gl::FRONT_AND_BACK, gl::LINE);
 
         vertex_array
@@ -116,8 +116,17 @@ impl Game {
 
             // Swap buffers
             self.window.swap_buffers();
+            check_error();
         }
     }
+}
+
+fn check_error() {
+    let err = gl::GetError();
+    let err_str = gl::GetString(err) as *::std::libc::c_char;
+    if !err_str.is_null() {
+        unsafe { println!("OPENGL ERROR: {}", ::std::str::raw::from_c_str(err_str)); }
+    } 
 }
 
 #[unsafe_destructor]
