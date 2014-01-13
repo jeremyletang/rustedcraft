@@ -52,7 +52,12 @@ mod input_manager;
 mod camera;
 mod timer;
 
+#[cfg(target_os="macos")]
 #[link(name = "glfw3")]
+extern {}
+
+#[cfg(target_os="linux")]
+#[link(name = "glfw")]
 extern {}
 
 #[start]
