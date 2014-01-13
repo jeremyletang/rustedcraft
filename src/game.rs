@@ -33,6 +33,7 @@ use world::World;
 use font::Font;
 use perf_metrics::{PerfMetrics, Fps};
 use input_manager::{InputManager, InputDatas};
+use math::Vec2;
 
 pub struct Game {
     priv window:            glfw::Window,
@@ -51,8 +52,8 @@ impl Game {
         let vertex_array =      Game::init_gl();
         let input_manager =     glfw_utils::init_callbacks(&window);
         let tex_loader =        texture_loader::make();
-        let world =             World::new(tex_loader.clone());
-        let font =              Rc::from_mut(RefCell::new(Font::new()));
+        let world =             World::new(tex_loader.clone(), Vec2::new(1024f32, 768f32));
+        let font =              Rc::new(RefCell::new(Font::new()));
         let pm =                PerfMetrics::new(Fps::new(), font.clone());
 
         Game {
@@ -83,7 +84,9 @@ impl Game {
         vertex_array
     }
 
-    pub fn test_should_close(&mut self, inputs: &InputDatas) -> () {
+    pub fn test_should_close(&mut self, 
+        inputs: &InputDatas) -> () {
+        
         for k in inputs.keys.iter() {
             match k {
                 &(_, glfw::KeyEscape)    => self.window.set_should_close(true),
@@ -93,19 +96,20 @@ impl Game {
     }
 
     pub fn run(&mut self) -> () {
-        let mut input_datas: InputDatas;
+        let mut input_datas = self.input_manager.update(&self.window);
         while !self.window.should_close() {
             self.fps.frame_begin();
             // Poll events
             glfw::poll_events();
-            input_datas = self.input_manager.update(&self.window);
-            self.test_should_close(&input_datas);
             
             // Clear the screen to black
             gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
 
             self.world.update(&input_datas);
             self.world.draw();
+            input_datas = self.input_manager.update(&self.window);
+            self.test_should_close(&input_datas);
+
 
             self.fps.frame_end();
             self.fps.draw();

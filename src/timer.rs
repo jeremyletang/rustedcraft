@@ -22,31 +22,31 @@
 use extra::time;
 
 pub struct Timer {
-	priv last: 	f64
+    priv last:  f64
 }
 
 impl Timer {
-	pub fn new() -> Timer {
-		Timer {
-			last: time::precise_time_s()
-		}
-	}
+    pub fn new() -> Timer {
+        Timer {
+            last: time::precise_time_s()
+        }
+    }
 
-	pub fn current(&self) -> f64 {
-		time::precise_time_s()
-	}
+    pub fn current(&self) -> f64 {
+        time::precise_time_s()
+    }
 
-	pub fn dela_time(&mut self) -> f64 {
-		let ret_time = time::precise_time_s() - self.last;
-		self.last = time::precise_time_s();
-		ret_time
-	}
+    pub fn delta_time(&mut self) -> f64 {
+        let ret_time = time::precise_time_s() - self.last;
+        self.last = time::precise_time_s();
+        ret_time
+    }
 
-	pub fn reset(&mut self) -> () {
-		self.last = time::precise_time_s()
-	}
+    pub fn reset(&mut self) -> () {
+        self.last = time::precise_time_s()
+    }
 
-	pub fn get_elapsed_time(&self) -> f64 {
-		time::precise_time_s() - self.last
-	}
+    pub fn get_elapsed_time(&self) -> f64 {
+        time::precise_time_s() - self.last
+    }
 }

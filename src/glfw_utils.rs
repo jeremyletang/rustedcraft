@@ -29,10 +29,10 @@ pub fn init() -> glfw::Window {
     glfw::window_hint::opengl_profile(glfw::OpenGlCoreProfile);
     glfw::window_hint::opengl_forward_compat(true);
     glfw::window_hint::samples(2);
-
     let window = glfw::Window::create(1024, 768, "rustedcraft", glfw::Windowed).unwrap();
     window.make_context_current();
-    glfw::set_swap_interval(0);
+    window.set_cursor_pos(1024f64 / 2f64, 768f64 / 2f64);
+    // glfw::set_swap_interval(0);
 
     window
 }

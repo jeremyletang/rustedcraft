@@ -33,7 +33,7 @@ pub fn make() -> Rc<RefCell<TextureLoader>> {
     tex_loader.load(~"./assets/ascii.png", gl::RGBA); 
     tex_loader.load(~"./assets/tex.jpg", gl::RGB);
     tex_loader.load(~"./assets/stonebrick_cracked.png", gl::RGBA);
-    Rc::from_mut(RefCell::new(tex_loader))
+    Rc::new(RefCell::new(tex_loader))
 }
 
 pub struct TextureLoader {

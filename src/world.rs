@@ -22,7 +22,7 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 
-use math::{Mat4, Vec3};
+use math::{Mat4, Vec3, Vec2};
 use cube::Cube;
 use texture_loader::TextureLoader;
 use camera::Camera;
@@ -35,24 +35,28 @@ pub struct CubeData {
 
 pub struct World {
     priv cubes_datas:       ~[CubeData],
-    priv position:          Vec3<f32>,
+    // priv position:          Vec3<f32>,
     priv camera:            Camera,
     priv cube:              Cube,
     priv texture_loader:    Rc<RefCell<TextureLoader>>
 }
 
 impl World {
-    pub fn new(texture_loader: Rc<RefCell<TextureLoader>>) -> World {
+    pub fn new(texture_loader: Rc<RefCell<TextureLoader>>,
+        window_size: Vec2<f32>) -> World {
+
         World {
             cubes_datas:        gen_world(),
-            position:           Vec3::new(0f32, 0f32, 0f32),
-            camera:             Camera::new(),
+            // position:           Vec3::new(0f32, 0f32, 0f32),
+            camera:             Camera::new(window_size),
             cube:               Cube::new(),
             texture_loader:     texture_loader
         }
     }
 
-    pub fn update(&mut self, input_datas: &InputDatas) -> () {
+    pub fn update(&mut self, 
+        input_datas: &InputDatas) -> () {
+
         self.camera.update(input_datas);
         // self.position.x += move.x;
         // self.position.y += move.y;
@@ -61,14 +65,14 @@ impl World {
 
     pub fn draw(&mut self) -> () {
         let mut mvp: Mat4<f32>;
-        let mut model: Mat4<f32>;
+        // let mut model: Mat4<f32>;
         let cam = self.camera.get_mat();
         for c in self.cubes_datas.iter() {
-            model = c.position.clone();
-            model.d1 += self.position.x;
-            model.d2 += self.position.y;
-            model.d3 += self.position.z;
-            mvp = cam.cross_product(&model);
+            // model = c.position.clone();
+            // model.d1 += self.position.x;
+            // model.d2 += self.position.y;
+            // model.d3 += self.position.z;
+            mvp = cam.cross_product(&Mat4::identity());
             self.cube.draw_cube(self.texture_loader.borrow().with(|loader| loader.get(c.tex_id)), &mvp);
         }
     }
@@ -77,12 +81,12 @@ impl World {
 fn gen_world() -> ~[CubeData] {
     let mut cubes_datas: ~[CubeData] = ~[];
     cubes_datas.push(CubeData { tex_id: 1, position: Mat4::identity() });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(2f32, 0f32, 0f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(2f32, 2f32, 0f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 2f32, 0f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(2f32, 0f32, -2f32) });
-    cubes_datas.push(CubeData { tex_id: 2, position: Mat4::translate(2f32, 2f32, -2f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 2f32, -2f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 0f32, -2f32) });
+    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(2f32, 0f32, 0f32) });
+    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(2f32, 2f32, 0f32) });
+    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 2f32, 0f32) });
+    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(2f32, 0f32, -2f32) });
+    // cubes_datas.push(CubeData { tex_id: 2, position: Mat4::translate(2f32, 2f32, -2f32) });
+    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 2f32, -2f32) });
+    // cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 0f32, -2f32) });
     cubes_datas
 }

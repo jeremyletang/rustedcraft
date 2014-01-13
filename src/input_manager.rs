@@ -42,6 +42,17 @@ impl InputManager {
         }
     }
 
+    pub fn check_input(&mut self, 
+        window: &glfw::Window,
+        keys: &mut ~[(glfw::Action, glfw::Key)]) -> () {
+
+        match window.get_key(glfw::KeyW) { glfw::Press => keys.push((glfw::Press, glfw::KeyW)), _ => {} }
+        match window.get_key(glfw::KeyD) { glfw::Press => keys.push((glfw::Press, glfw::KeyD)), _ => {} }
+        match window.get_key(glfw::KeyS) { glfw::Press => keys.push((glfw::Press, glfw::KeyS)), _ => {} }
+        match window.get_key(glfw::KeyA) { glfw::Press => keys.push((glfw::Press, glfw::KeyA)), _ => {} }
+
+    }
+
     pub fn update(&mut self, window: &glfw::Window) -> InputDatas {
         let mut inputs: ~[(glfw::Action, glfw::Key)] = ~[];
 
@@ -53,15 +64,17 @@ impl InputManager {
         }
 
         let mouse_pos = match window.get_cursor_pos() {
-            (x, y)  => Vec2::new(num::cast::<f64,f32>(x).unwrap(), num::cast::<f64, f32>(y).unwrap())
+            (x, y)  => {println!("MOUSE_X: {} / MOUSE_Y: {}", x, y);
+                Vec2::new(num::cast::<f64,f32>(x).unwrap(), num::cast::<f64, f32>(y).unwrap())
+            }
         };
         match window.get_size() {
             (x, y)  => {
                 window.set_cursor_pos(num::cast::<i32, f64>(x).unwrap() / 2f64,
                     num::cast::<i32, f64>(y).unwrap() / 2f64)
             }
-        }
-
+        };
+        self.check_input(window, &mut inputs);
         InputDatas {
             keys:           inputs,
             mouse_position: mouse_pos
