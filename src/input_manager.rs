@@ -23,6 +23,7 @@ use std::num;
 
 use glfw;
 use math::Vec2;
+use timer::Timer;
 
 #[deriving(Clone, ToStr)]
 pub struct InputDatas {
@@ -32,6 +33,7 @@ pub struct InputDatas {
 
 pub struct InputManager {
     priv key_port:      Port<(glfw::Action, glfw::Key)>,
+    priv timer:         Timer
 }
 
 
@@ -39,6 +41,7 @@ impl InputManager {
     pub fn new(k_port: Port<(glfw::Action, glfw::Key)>) -> InputManager {
         InputManager {
             key_port:       k_port,
+            timer:          Timer::new()
         }
     }
 
@@ -64,16 +67,23 @@ impl InputManager {
         }
 
         let mouse_pos = match window.get_cursor_pos() {
-            (x, y)  => {println!("MOUSE_X: {} / MOUSE_Y: {}", x, y);
-                Vec2::new(num::cast::<f64,f32>(x).unwrap(), num::cast::<f64, f32>(y).unwrap())
+            (x, y)  => { println!("MOUSE_X: {:f} / MOUSE_Y: {:f}", x, y);
+                if (x == 0f64 && y == 0f64) {
+                    Vec2::new(1024f32 / 2f32, 768f32 /2f32)
+                } else {
+                    Vec2::new(num::cast::<f64,f32>(x).unwrap(), num::cast::<f64, f32>(y).unwrap())
+                }
             }
         };
-        match window.get_size() {
-            (x, y)  => {
-                window.set_cursor_pos(num::cast::<i32, f64>(x).unwrap() / 2f64,
-                    num::cast::<i32, f64>(y).unwrap() / 2f64)
-            }
-        };
+        // if self.timer.get_elapsed_time() > 1f64 {
+            match window.get_size() {
+                (x, y)  => {
+                    window.set_cursor_pos(num::cast::<i32, f64>(x).unwrap() / 2f64,
+                        num::cast::<i32, f64>(y).unwrap() / 2f64)
+                }
+            };
+            // self.timer.reset()
+        // }
         self.check_input(window, &mut inputs);
         InputDatas {
             keys:           inputs,
