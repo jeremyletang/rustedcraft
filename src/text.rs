@@ -19,6 +19,10 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+// TODO : return Vec4<f32>(left, top, width, height)
+// TODO text::string_size(string: &str) -> Vec4<f32>;
+
+
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::{ptr, mem, cast};

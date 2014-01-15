@@ -22,11 +22,12 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 
-use math::{Mat4, Vec3, Vec2};
+use math::{Mat4, Vec2};
 use cube::Cube;
 use texture_loader::TextureLoader;
 use camera::Camera;
 use input_manager::InputDatas;
+use noise::perlin_noise::PerlinNoise;
 
 pub struct CubeData {
     tex_id:         u32,
@@ -68,7 +69,7 @@ impl World {
         let mut model: Mat4<f32>;
         let cam = self.camera.get_mat();
         for c in self.cubes_datas.iter() {
-            model = c.position.clone();
+            model = c.position.clone().cross_product(&Mat4::scale(0.5f32, 0.5f32, 0.5f32));
             // model.d1 += self.position.x;
             // model.d2 += self.position.y;
             // model.d3 += self.position.z;
@@ -78,15 +79,37 @@ impl World {
     }
 }
 
+// fn fbm(x: f32, y: f32, z: f32, octaves: i32, lacunarity: f32, gain: f32, noise: &PerlinNoise<f32>) -> f32 {
+//     let mut amplitude = 1f32;
+//     let mut frequency = 1f32;
+//     let mut sum = 0f32;
+//     for i in range(0, octaves) {
+//         println!("SUM: {}", sum);
+//         println!("AMPLITUDE *: {}", amplitude * (noise.noise(x * frequency.clone(), y * frequency.clone(), z * frequency.clone())));
+//         sum += amplitude * (noise.noise(x * frequency.clone(), y * frequency.clone(), z * frequency.clone()));
+//         amplitude *= gain;
+//         frequency *= lacunarity;
+//     }
+//     sum
+// }
+
+// 16 / 10 / 16
 fn gen_world() -> ~[CubeData] {
+    let n = PerlinNoise::<f32>::new();
     let mut cubes_datas: ~[CubeData] = ~[];
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::identity() });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(4f32, 0f32, 0f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(4f32, 4f32, 0f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 4f32, 0f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(4f32, 0f32, -4f32) });
-    cubes_datas.push(CubeData { tex_id: 2, position: Mat4::translate(4f32, 4f32, -4f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 4f32, -4f32) });
-    cubes_datas.push(CubeData { tex_id: 1, position: Mat4::translate(0f32, 0f32, -4f32) });
+
+    for y in range(0f32, 1f32) {
+        for x in range(0f32, 80f32) {
+            for z in range(0f32, 80f32) {
+                // let tex = fbm(x * 0.01, y  * 0.1, z, 8, 2f32, 0.5f32, &n)* 0.5 + 0.5;
+                let tex = n.noise(x * 0.01, y * 0.1 * 1.5, z * 0.05)  * 0.5 + 0.5;
+                println!("{}", tex);
+                // if (tex * 10f32) as u32 == 3 {
+                    cubes_datas.push(CubeData { tex_id: 2 as u32 , position: Mat4::translate(x, (tex * 10f32).trunc(), z) });
+                // }
+            }
+        }
+    }
+
     cubes_datas
 }

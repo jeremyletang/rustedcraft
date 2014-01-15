@@ -19,57 +19,7 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#[feature(macro_rules)];
-#[crate_id = "rustedcraft#0.0.1"];
-#[crate_type = "bin"];
+pub use noise::perlin_noise::PerlinNoise;
 
-#[warn(unnecessary_typecast)];
-#[warn(non_uppercase_pattern_statics)];
-#[warn(non_uppercase_statics)];
-#[warn(non_camel_case_types)];
-
-#[allow(dead_code)];
-
-extern mod extra;
-extern mod native;
-extern mod gl;
-extern mod glfw;
-extern mod stb = "stb_image";
-
-use game::Game;
-
-mod glfw_utils;
-mod game;
-mod perf_metrics;
-mod shaders;
-mod math;
-mod cube;
-mod texture_loader;
-mod world;
-mod font;
-mod text;
-mod input_manager;
-mod camera;
-mod timer;
-mod noise;
-
-#[cfg(target_os="macos")]
-#[link(name = "glfw3")]
-extern {}
-
-#[cfg(target_os="linux")]
-#[link(name = "glfw")]
-extern {}
-
-#[start]
-fn start(argc: int, argv: **u8) -> int {
-    native::start(argc, argv, main)
-}
-
-
-fn main() {
-    do glfw::start {
-        let mut game = Game::new();
-        game.run();
-    }
-}
+pub mod perlin_noise;
+// pub mod simplex;

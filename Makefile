@@ -23,3 +23,6 @@ clean:
 	cd lib/glfw-rs && make clean
 	cd lib/rust-stb-image && make clean 
 	$(RM) $(BIN_PATH)
+
+doc:
+	rustdoc -o doc src/main.rs $(libs) 

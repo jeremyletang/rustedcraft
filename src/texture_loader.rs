@@ -31,8 +31,14 @@ use stb::image::ImageU8;
 pub fn make() -> Rc<RefCell<TextureLoader>> {
     let mut tex_loader = TextureLoader::new();    
     tex_loader.load(~"./assets/ascii.png", gl::RGBA); 
-    tex_loader.load(~"./assets/tex.jpg", gl::RGB);
     tex_loader.load(~"./assets/stonebrick_cracked.png", gl::RGBA);
+    tex_loader.load(~"./assets/bedrock.png", gl::RGBA);
+    tex_loader.load(~"./assets/dragonEgg.png", gl::RGBA);
+    tex_loader.load(~"./assets/hellrock.png", gl::RGBA);
+    tex_loader.load(~"./assets/hellsand.png", gl::RGBA);
+    tex_loader.load(~"./assets/oreGold.png", gl::RGBA);
+    tex_loader.load(~"./assets/oreIron.png", gl::RGBA);
+    tex_loader.load(~"./assets/sponge.png", gl::RGBA);
     Rc::new(RefCell::new(tex_loader))
 }
 

@@ -207,6 +207,7 @@ fn make_tex_coords() -> GLuint {
     1f32, 1f32,
     0f32, 1f32];
 
+
     unsafe {
         gl::GenBuffers(1, &mut tex_coords);
         gl::BindBuffer(gl::ARRAY_BUFFER, tex_coords);

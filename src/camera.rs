@@ -29,7 +29,7 @@ use math::{Mat4, Vec3, Vec2};
 use timer::Timer;
 
 pub static SPEED: f32               = 12f32;
-pub static MOUSE_SPEED: f32         = 0.07f32;
+pub static MOUSE_SPEED: f32         = 0.1f32;
 pub static FOVY: f32                = 45f32;
 pub static ASPECT: f32              = 4f32 / 3f32;
 pub static Z_NEAR: f32              = 0.1f32;
@@ -50,8 +50,8 @@ impl Camera {
     pub fn new(window_size: Vec2<f32>) -> Camera {
         Camera {
             mat_projection:     Mat4::perspective(FOVY, ASPECT, Z_NEAR, Z_FAR),
-            mat_view:           Mat4::look_at(&Vec3::new(0f32, 0f32, 5f32), &Vec3::new(0f32, 0f32, 0f32), &Vec3::new(0f32, 1f32, 0f32)),
-            position:           Vec3::new(0f32, 0f32, 5f32),
+            mat_view:           Mat4::look_at(&Vec3::new(0f32, 0f32, 9f32), &Vec3::new(0f32, 0f32, 0f32), &Vec3::new(0f32, 1f32, 0f32)),
+            position:           Vec3::new(0f32, 9f32, 0f32),
             h_angle:            PI,
             v_angle:            0f32,
             timer:              Timer::new(),
@@ -89,6 +89,8 @@ impl Camera {
         // let up      = right.cross_product(&dir);
         let up = Vec3::new(0f32, 1f32, 0f32);
         self.move(input_datas, &dir, &right, ::std::num::cast(delta_time).unwrap());
+        // Free fly = remove / add the next line
+        // self.position.y = 1f32;
         self.mat_view = Mat4::look_at(&self.position, &self.position.add_vec(&dir), &up);
     }
 
